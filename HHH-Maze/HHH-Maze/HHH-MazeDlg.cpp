@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CHHHMazeDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CHHHMazeDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CHHHMazeDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CHHHMazeDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -169,7 +170,7 @@ void CHHHMazeDlg::DrawBackground(CDC* dc)
 
 	oldPen = dc->SelectObject(&pen);
 	oldBrush = dc->SelectObject(&brush);
-	dc->Rectangle(50, 50, 555, 555);
+	dc->Rectangle(BASE_POS_X, BASE_POS_Y, BASE_POS_X + BOARD_SIZE, BASE_POS_Y + BOARD_SIZE);
 	dc->SelectObject(oldPen);
 	dc->SelectObject(oldBrush);
 }
@@ -192,10 +193,10 @@ void CHHHMazeDlg::SetData()
 			CClientDC dc(this);
 
 			CFont font;
-			font.CreateFont(8,0,0,0,FW_BOLD,0,0,0,0,0,0,2,0,_T("Gulim"));
+			font.CreateFont(10,0,0,0,FW_BOLD,0,0,0,0,0,0,2,0,_T("Gulim"));
 			dc.SelectObject(&font);
 
-			dc.TextOutW(51 + i * 10, 51 + j * 10, str);
+			dc.TextOutW(BASE_POS_X + i * 20, BASE_POS_Y + j * 20, str);
 #endif
 		}
 	}
@@ -216,7 +217,7 @@ void CHHHMazeDlg::MakeMaze()
 	oldBrush = dc.SelectObject(&brush);
 
 	// Init
-	int i = 27;
+	int i = 0;
 	int j = 0;
 	int cnt = 0;
 	CPoint pt;
@@ -292,12 +293,10 @@ void CHHHMazeDlg::MakeMaze()
 		if (dest_pt == INT_MAX) break;
 
 		// Draw Graph
-		//int base_x = 55 + i * 20;
-		//int base_y = 55 + j * 20;
-		//int width = 10;
-		int base_x = 55 + i * 10;
-		int base_y = 55 + j * 10;
-		int width = 5;
+		int width = 10;
+		int base_x = BASE_POS_X + width + i * 20;
+		int base_y = BASE_POS_Y + width + j * 20;
+
 		dc.Rectangle(base_x, base_y, base_x + width, base_y + width); // Current position
 		// Direction
 		switch (dest)
@@ -418,4 +417,17 @@ void CHHHMazeDlg::LoadMask()
 void CHHHMazeDlg::OnBnClickedButton2()
 {
 	LoadMask();
+}
+
+void CHHHMazeDlg::ResetMaze()
+{
+	InitData();
+	CClientDC dc(this);
+	DrawBackground(&dc);
+	return;
+}
+
+void CHHHMazeDlg::OnBnClickedButton3()
+{
+	ResetMaze();
 }

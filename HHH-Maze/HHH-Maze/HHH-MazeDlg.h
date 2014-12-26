@@ -10,8 +10,6 @@ namespace Dest
 	enum Enum { UP, DOWN, LEFT, RIGHT };
 }
 
-enum PPP { UP, DOWN, LEFT, RIGHT };
-
 
 // CHHHMazeDlg 대화 상자
 class CHHHMazeDlg : public CDialogEx
@@ -23,32 +21,36 @@ public:
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_HHHMAZE_DIALOG };
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
-
-
-// 구현입니다.
-protected:
-	HICON m_hIcon;
-
-	enum { MAZE_X = 50, MAZE_Y = 50 };
+private:
+	enum { 
+		BASE_POS_X = 30,
+		BASE_POS_Y = 60,
+		BOARD_SIZE = 510
+	};
+	enum { MAZE_X = 25, MAZE_Y = 25 };
 
 	BOOL m_bMasked;
 	int m_mapData[MAZE_X][MAZE_Y];
 	std::vector<CPoint> m_vCursor;
+	HICON m_hIcon;
 
-	// 생성된 메시지 맵 함수
+	void DrawBackground(CDC* dc);
+	void MakeMaze();
+	void ResetMaze();
+	void LoadMask();
+	void InitData();
+	void SetData();
+	
+	// 구현입니다.
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
 	virtual BOOL OnInitDialog();
+
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
-public:
 	afx_msg void OnBnClickedButton1();
-	void DrawBackground(CDC* dc);
-	void MakeMaze();
-	void InitData();
-	void SetData();
 	afx_msg void OnBnClickedButton2();
-	void LoadMask();
+	afx_msg void OnBnClickedButton3();
+	DECLARE_MESSAGE_MAP()
 };
